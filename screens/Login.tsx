@@ -33,7 +33,7 @@ export default function Login() {
         <Text className="text-black text-[40px] leading-[44px] font-extrabold text-center tracking-tight">
           KANTOR POS 
           {"\n"}
-          CIRRBON
+          CIREBON
         </Text>
 
         {/* Username */}
