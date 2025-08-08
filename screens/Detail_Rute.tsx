@@ -39,7 +39,11 @@ export default function Detail_Rute() {
           </Text>
           <Text className="text-base text-gray-800 leading-6 mt-3">
             AG lebih unggul ketika jumlah lokasi lebih banyak atau kompleks karena mampu menjelajahi lebih banyak kemungkinan
-            rute. NN cenderung lebih cepat, tetapi tidak selalu menghasilkan rute terpendek.
+            rute. 
+            
+          </Text>
+          <Text className="text-base text-gray-800 leading-6 mt-3">
+            NN cenderung lebih cepat, tetapi tidak selalu menghasilkan rute terpendek.
           </Text>
 
           <View className="flex-row flex-wrap gap-2 mt-4">
@@ -56,13 +60,13 @@ export default function Detail_Rute() {
         </View>
 
         {/* Key takeaways */}
-        <View className="mt-4 bg-white rounded-2xl p-4 border border-gray-100">
+        {/* <View className="mt-4 bg-white rounded-2xl p-4 border border-gray-100">
           <Text className="text-sm font-semibold text-gray-900 mb-2">Ringkasan utama</Text>
           <View className="gap-2">
             <Text className="text-gray-700 text-sm">AG menjelajahi lebih banyak kemungkinan, cocok untuk dataset kompleks.</Text>
             <Text className="text-gray-700 text-sm">NN lebih cepat, namun bisa menghasilkan rute yang kurang optimal.</Text>
           </View>
-        </View>
+        </View> */}
 
         {/* Back CTA */}
         <TouchableOpacity
