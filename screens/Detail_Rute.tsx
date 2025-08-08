@@ -160,7 +160,7 @@ export default function Detail_Rute() {
             onPress={() => navigation.navigate("Maps")}
             className="mr-3 h-9 w-9 items-center justify-center rounded-full bg-gray-100"
           >
-            {/* <Text className="text-xl text-gray-700">←</Text> */}
+            <Text className="text-base text-gray-700">🔙</Text>
           </TouchableOpacity>
           <View>
             <Text className="text-lg font-semibold text-gray-900">Detail Rute</Text>
