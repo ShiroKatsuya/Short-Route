@@ -147,20 +147,17 @@ export default function Maps() {
           elevation: 6
         }}
       >
-        <Text className="text-[16px] text-black">
-          <Text className="font-bold">Dari 4 kelompok uji, Algoritma Genetika (AG) menang di 2 kelompok (A–E & K–O), Nearest Neighbor (NN) menang di 1 kelompok (F–J), dan 1 kelompok (P–Q) hasilnya sama.
 
-AG lebih unggul saat jumlah lokasi lebih banyak/kompleks karena dapat menjelajahi lebih banyak kemungkinan rute.
-
-NN bisa lebih cepat, tetapi tidak selalu menghasilkan rute terpendek. ini hasil yang di bawahnya maps</Text> 
-        </Text>
-
-
-        <Pressable className="mt-3 rounded-lg bg-neutral-100 py-3 items-center">
+        <TouchableOpacity 
+        className="mt-3 rounded-lg bg-neutral-100 py-3 items-center"
+        onPress={() => {
+            navigation.navigate("Detail_Rute" as never);
+          }}
+        >
           <Text className="text-[16px] text-neutral-800 font-semibold">
             Lihat Detail Rute
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       {/* Bottom tab bar */}

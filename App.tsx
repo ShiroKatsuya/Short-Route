@@ -4,6 +4,7 @@ import { LogBox } from 'react-native';
 import "./global.css"
 import Maps from './screens/Maps';
 import Login from './screens/Login';
+import Detail_Rute from './screens/Detail_Rute';
 
 
 LogBox.ignoreLogs([
@@ -25,6 +26,7 @@ export default function App() {
       >
         <Stack.Screen name="Maps" component={Maps} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Detail_Rute" component={Detail_Rute} />
       </Stack.Navigator>
     </NavigationContainer>
   );
