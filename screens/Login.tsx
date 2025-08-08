@@ -20,12 +20,16 @@ export default function Login() {
   return (
     <SafeAreaView className="flex-1 mt-10 bg-gray-100">
       <StatusBar barStyle="light-content" backgroundColor="#F37021" />
+      {/* Header with orange background */}
+      <View className="bg-[#F37021] h-14 px-5 py-4 flex-row items-center justify-center">
 
-      {/* Top header */}
+      </View>
 
+ 
 
       {/* Content */}
       <View className="px-6 pt-7">
+    
         <Text className="text-black text-[40px] leading-[44px] font-extrabold text-center tracking-tight">
           KANTOR POS 
           {"\n"}

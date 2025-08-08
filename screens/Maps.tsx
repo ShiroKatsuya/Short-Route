@@ -85,6 +85,7 @@ export default function Maps() {
       <StatusBar barStyle="light-content" backgroundColor="#F37021" />
       {/* Header */}
       <View className="bg-[#F37021] px-5 py-3 flex-row items-center justify-between">
+        
         <Text className="text-white font-extrabold text-[24px]">
           Optimasi Rute Distribusi
         </Text>
