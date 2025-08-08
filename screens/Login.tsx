@@ -26,10 +26,11 @@ export default function Login() {
 
       {/* Content */}
       <View className="px-6 pt-7">
-        {/* <Text className="text-black text-[40px] leading-[44px] font-extrabold text-center tracking-tight">
-          ANTAR-IN
+        <Text className="text-black text-[40px] leading-[44px] font-extrabold text-center tracking-tight">
+          KANTOR POS 
           {"\n"}
-        </Text> */}
+          CIRRBON
+        </Text>
 
         {/* Username */}
         <View className="mt-8">
