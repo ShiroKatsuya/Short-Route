@@ -1,12 +1,12 @@
 import "../global.css";
 import { Text, View, Pressable, StatusBar, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MapView, { Marker as MapMarker, Polyline, Region } from "react-native-maps";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useMemo } from "react";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { WebView, WebViewMessageEvent } from "react-native-webview";
+import mapTemplate from "./map-template";
 
 type RoutePoint = { label: string; latitude: number; longitude: number };
-
 
 const ROUTE_POINTS: RoutePoint[] = [
   { label: "A", latitude: -6.717536968419976, longitude: 108.57236909901103 },
@@ -28,64 +28,37 @@ const ROUTE_POINTS: RoutePoint[] = [
   { label: "Q", latitude: -6.768032295888456, longitude: 108.41664725833272 },
 ];
 
-const INITIAL_REGION = {
-  latitude: -6.717536968419976,
-  longitude: 108.57236909901103,
-  latitudeDelta: 1.0,
-  longitudeDelta: 1.0
-};
-
-function LabeledMarker({ label, latitude, longitude }: RoutePoint) {
-  return (
-    <MapMarker coordinate={{ latitude, longitude }} anchor={{ x: 0.5, y: 0.5 }}>
-      <View
-        className="items-center justify-center rounded-full border-2"
-        style={{
-          width: 28,
-          height: 28,
-          backgroundColor: "#F37021",
-          borderColor: "#ffffff"
-        }}
-      >
-        <Text className="text-white font-bold text-[13px]">{label}</Text>
-      </View>
-    </MapMarker>
-  );
-}
+const INITIAL_CENTER = [108.57236909901103, -6.717536968419976];
 
 export default function Maps() {
-  // If you have a RootStackParamList, use it here for type safety
-  // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const navigation = useNavigation<NavigationProp<any>>();
-  const mapRef = useRef<MapView>(null);
-  const [region, setRegion] = useState<Region>(INITIAL_REGION);
+  const webRef = useRef<WebView>(null);
 
-  const MIN_DELTA = 0.005;
-  const MAX_DELTA = 100;
-
-  const animateTo = useCallback((nextRegion: Region) => {
-    mapRef.current?.animateToRegion(nextRegion, 200);
-    setRegion(nextRegion);
+  const html = useMemo(() => {
+    return mapTemplate({
+      routePoints: ROUTE_POINTS,
+      initialCenter: INITIAL_CENTER,
+      initialZoom: 9,
+    });
   }, []);
 
-  const handleZoomIn = useCallback(() => {
-    const newLatDelta = Math.max(region.latitudeDelta * 0.5, MIN_DELTA);
-    const newLongDelta = Math.max(region.longitudeDelta * 0.5, MIN_DELTA);
-    animateTo({ ...region, latitudeDelta: newLatDelta, longitudeDelta: newLongDelta });
-  }, [region, animateTo]);
+  const handleMapEvent = (event: WebViewMessageEvent) => {
+    // Example: handle center updates from the map if needed
+    // const data = JSON.parse(event.nativeEvent.data);
+    // console.log('Map event:', data);
+  };
 
-  const handleZoomOut = useCallback(() => {
-    const newLatDelta = Math.min(region.latitudeDelta * 2, MAX_DELTA);
-    const newLongDelta = Math.min(region.longitudeDelta * 2, MAX_DELTA);
-    animateTo({ ...region, latitudeDelta: newLatDelta, longitudeDelta: newLongDelta });
-  }, [region, animateTo]);
+  const handleZoomIn = () => {
+    webRef.current?.injectJavaScript("window.mapApi && window.mapApi.zoomIn && window.mapApi.zoomIn(); true;");
+  };
+  const handleZoomOut = () => {
+    webRef.current?.injectJavaScript("window.mapApi && window.mapApi.zoomOut && window.mapApi.zoomOut(); true;");
+  };
 
   return (
     <SafeAreaView className="flex-1 ]">
       <StatusBar barStyle="light-content" backgroundColor="#F37021" />
-      {/* Header */}
       <View className="bg-[#F37021] px-5 py-3 flex-row items-center justify-between">
-        
         <Text className="text-white font-extrabold text-[24px]">
           Optimasi Rute Distribusi
         </Text>
@@ -94,34 +67,21 @@ export default function Maps() {
         </View>
       </View>
 
-      {/* Title band */}
-  
-
-      {/* Map canvas */}
       <View className="relative flex-1 ">
-        <MapView
-          ref={mapRef}
-          style={{ flex: 1, height: '100%' }}
-          region={region}
-          onRegionChangeComplete={setRegion}
-          zoomEnabled
-          zoomControlEnabled
-        >
-          <Polyline
-            coordinates={ROUTE_POINTS.map((p) => ({
-              latitude: p.latitude,
-              longitude: p.longitude
-            }))}
-            strokeColor="#1E5EF3"
-            strokeWidth={5}
-          />
+        <WebView
+          ref={webRef}
+          onMessage={handleMapEvent}
+          originWhitelist={["*"]}
+          javaScriptEnabled
+          scalesPageToFit={false}
+          automaticallyAdjustContentInsets={false}
+          source={{ html }}
+          style={{ flex: 1, height: "100%" }}
+          onLoadEnd={() => {
+            webRef.current?.injectJavaScript("window.mapApi && window.mapApi.fitToRoute && window.mapApi.fitToRoute(); true;");
+          }}
+        />
 
-          {ROUTE_POINTS.map((p, idx) => (
-            <LabeledMarker key={`${p.label}-${idx}`} {...p} />
-          ))}
-        </MapView>
-
-        {/* Zoom controls */}
         <View style={{ position: "absolute", right: 12, bottom: 140 }}>
           <View
             className="rounded-xl bg-white overflow-hidden"
@@ -137,7 +97,6 @@ export default function Maps() {
         </View>
       </View>
 
-      {/* Info card (outside map) */}
       <View
         className="mx-4 my-2 rounded-2xl bg-white px-5 py-4"
         style={{
@@ -148,26 +107,20 @@ export default function Maps() {
           elevation: 6
         }}
       >
-
-        <TouchableOpacity 
-        className="mt-3 rounded-lg bg-neutral-100 py-3 items-center"
-        onPress={() => {
-            navigation.navigate("Detail_Rute" as never);
-          }}
+        <Pressable 
+          className="mt-3 rounded-lg bg-neutral-100 py-3 items-center"
+          onPress={() => { navigation.navigate("Detail_Rute" as never); }}
         >
           <Text className="text-[16px] text-neutral-800 font-semibold">
             Lihat Detail Rute
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
-      {/* Bottom tab bar */}
       <View className="flex-row items-center justify-around border-t border-neutral-200 py-2 bg-white">
         <TouchableOpacity
           className="items-center"
-          onPress={() => {
-            navigation.navigate("Login" as never);
-          }}
+          onPress={() => { navigation.navigate("Login" as never); }}
         >
           <Text className="text-[22px]">ⓘ</Text>
           <Text className="text-neutral-500 text-xs mt-0.5">Back</Text>
