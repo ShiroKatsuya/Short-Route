@@ -173,30 +173,52 @@ export default function Detail_Rute() {
       <ScrollView className="flex-1 px-4 py-4" contentContainerStyle={{ paddingBottom: 24 }}>
         {/* Summary card */}
         <View className="bg-white rounded-2xl p-4 border border-gray-100">
-          <Text className="text-base text-gray-800 leading-6">
-            Dari 4 kelompok uji, Algoritma Genetika (AG) menang di 2 kelompok (A–E & K–O), Nearest Neighbor (NN)
-            menang di 1 kelompok (F–J), dan 1 kelompok (P–Q) hasilnya sama.
-          </Text>
-          <Text className="text-base text-gray-800 leading-6 mt-3">
-            AG lebih unggul ketika jumlah lokasi lebih banyak atau kompleks karena mampu menjelajahi lebih banyak kemungkinan
-            rute. 
-            
-          </Text>
-          <Text className="text-base text-gray-800 leading-6 mt-3">
-            NN cenderung lebih cepat, tetapi tidak selalu menghasilkan rute terpendek.
-          </Text>
+          {/* Algorithm selection buttons */}
+          <View className="flex-row gap-3 mb-4">
+            <TouchableOpacity className="flex-1 bg-green-500 py-3 px-4 rounded-lg">
+              <Text className="text-white text-center font-medium">Rute Algoritma Genetika</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className="flex-1 bg-blue-500 py-3 px-4 rounded-lg">
+              <Text className="text-white text-center font-medium">Rute Nearest Neighbor</Text>
+            </TouchableOpacity>
+          </View>
 
-          <View className="flex-row flex-wrap gap-2 mt-4">
-            <View className="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100">
-              <Text className="text-emerald-700 text-xs font-medium">AG menang: 2 kelompok</Text>
-            </View>
-            <View className="px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100">
-              <Text className="text-indigo-700 text-xs font-medium">NN menang: 1 kelompok</Text>
-            </View>
-            <View className="px-3 py-1 rounded-full bg-amber-50 border border-amber-100">
-              <Text className="text-amber-700 text-xs font-medium">Seri: 1 kelompok</Text>
+          {/* Destination heading with location pin */}
+          <View className="items-center mb-4">
+            <Text className="text-xl font-bold text-black mb-2">Kantor Pos Cirebon</Text>
+            <View className="w-6 h-6 bg-black rounded-full items-center justify-center">
+              <Text className="text-white text-xs">📍</Text>
             </View>
           </View>
+
+          {/* Distance comparison results */}
+          <View className="space-y-3 mb-4">
+            <View className="flex-col justify-start items-start">
+              <Text className="text-base text-black">Algoritma Genetika</Text>
+              <View className="flex-row justify-between w-full">
+                <Text className="text-base text-black font-medium">Total Jarak</Text>
+                <Text className="text-base text-black font-medium">77.2 km</Text>
+              </View>
+              <Text className="text-base text-black font-medium">
+                A → C → F → H → K → M → N → P → Q → O → L → J → G → D → B → E → I → A
+              </Text>
+            </View>
+            <View className="flex-col justify-start items-start">
+              <Text className="text-base text-black">Nearest Neighbor</Text>
+              <View className="flex-row justify-between w-full">
+                <Text className="text-base text-black font-medium">Total Jarak</Text>
+                <Text className="text-base text-black font-medium">81.0 km</Text>
+              </View>
+              <Text className="text-base text-black font-medium">
+                A → B → D → G → J → L → O → Q → P → N → M → K → H → F → C → E → I → A
+              </Text>
+            </View>
+          </View>
+
+          {/* Conclusion statement */}
+          <Text className="text-base text-black text-center">
+            Rute AG lebih optimal dengan selisih 3.8 km lebih pendek.
+          </Text>
         </View>
 
         {/* Locations table (responsive) */}
